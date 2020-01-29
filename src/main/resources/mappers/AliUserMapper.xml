@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmr.ruigou.dao.AliUserMapper">
+    <resultMap id="BaseResultMap" type="com.xmr.ruigou.pojo.AliUser">
+        <id column="ali_user_id" property="aliUserId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ali_user_id, user_id, nick_name, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from ali_user
+        where ali_user_id = #{aliUserId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from ali_user
+        where ali_user_id = #{aliUserId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.xmr.ruigou.pojo.AliUser">
+        insert into ali_user (ali_user_id, user_id, nick_name,
+                              create_time, update_time)
+        values (#{aliUserId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR},
+                now(), now())
+    </insert>
+    <insert id="insertSelective" parameterType="com.xmr.ruigou.pojo.AliUser">
+        insert into ali_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aliUserId != null">
+                ali_user_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="aliUserId != null">
+                #{aliUserId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xmr.ruigou.pojo.AliUser">
+        update ali_user
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+        </set>
+        where ali_user_id = #{aliUserId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xmr.ruigou.pojo.AliUser">
+        update ali_user
+        set user_id     = #{userId,jdbcType=BIGINT},
+            nick_name   = #{nickName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = now()
+        where ali_user_id = #{aliUserId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from ali_user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmr.ruigou.dao.CartMapper">
+    <resultMap id="BaseResultMap" type="com.xmr.ruigou.pojo.Cart">
+        <id column="cart_id" property="cartId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="checked" property="checked" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        cart_id, user_id, product_id, quantity, checked, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from cart
+        where cart_id = #{cartId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from cart
+        where cart_id = #{cartId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.xmr.ruigou.pojo.Cart">
+        insert into cart (cart_id, user_id, product_id,
+                          quantity, checked, create_time,
+                          update_time)
+        values (#{cartId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT},
+                #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER}, now(), now())
+    </insert>
+    <insert id="insertSelective" parameterType="com.xmr.ruigou.pojo.Cart">
+        insert into cart
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cartId != null">
+                cart_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="checked != null">
+                checked,
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cartId != null">
+                #{cartId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="checked != null">
+                #{checked,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xmr.ruigou.pojo.Cart">
+        update cart
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="checked != null">
+                checked = #{checked,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+        </set>
+        where cart_id = #{cartId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xmr.ruigou.pojo.Cart">
+        update cart
+        set user_id     = #{userId,jdbcType=BIGINT},
+            product_id  = #{productId,jdbcType=BIGINT},
+            quantity    = #{quantity,jdbcType=INTEGER},
+            checked     = #{checked,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = now()
+        where cart_id = #{cartId,jdbcType=INTEGER}
+    </update>
+    <select id="selectCartByUserIdAndProductId" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from cart
+        where user_id = #{userId}
+        and product_id = #{productId}
+    </select>
+    <select id="selectCartByUserId" resultMap="BaseResultMap" parameterType="long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from cart
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectCartProductCheckedStatusByUserId" resultType="int" parameterType="int">
+        SELECT count(1)
+        from cart
+        where checked = 0
+          and user_id = #{userId}
+    </select>
+    <select id="selectCartProductCount" resultType="java.lang.Integer"></select>
+    <select id="selectCheckedCartByUserId" resultType="com.xmr.ruigou.pojo.Cart"></select>
+
+    <delete id="deleteByUserIdProductIds" parameterType="map">
+        delete from cart
+        where user_id = #{userId}
+        <if test="productIdList != null">
+            and product_id in
+            <foreach collection="productIdList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
+    <update id="checkedOrUncheckedProduct" parameterType="map">
+        UPDATE cart
+        set checked = #{checked},
+        update_time = now()
+        where user_id = #{userId}
+        <if test="productId != null">
+            and product_id = #{productId}
+        </if>
+    </update>
+
+
+</mapper>

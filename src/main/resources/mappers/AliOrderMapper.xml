@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmr.ruigou.dao.AliOrderMapper">
+    <resultMap id="BaseResultMap" type="com.xmr.ruigou.pojo.AliOrder">
+        <id column="ali_order_id" property="aliOrderId" jdbcType="BIGINT"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DOUBLE"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.xmr.ruigou.pojo.AliOrder" extends="BaseResultMap">
+        <result column="img" property="img" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ali_order_id, nick_name, name, price, create_time, update_time
+    </sql>
+    <sql id="Blob_Column_List">
+        img
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from ali_order
+        where ali_order_id = #{aliOrderId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from ali_order
+        where ali_order_id = #{aliOrderId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.xmr.ruigou.pojo.AliOrder">
+        insert into ali_order (ali_order_id, nick_name, name,
+                               price, create_time, update_time,
+                               img)
+        values (#{aliOrderId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+                #{price,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, now(), #{img,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.xmr.ruigou.pojo.AliOrder">
+        insert into ali_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aliOrderId != null">
+                ali_order_id,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="aliOrderId != null">
+                #{aliOrderId,jdbcType=BIGINT},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+            <if test="img != null">
+                #{img,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xmr.ruigou.pojo.AliOrder">
+        update ali_order
+        <set>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+            <if test="img != null">
+                img = #{img,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where ali_order_id = #{aliOrderId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xmr.ruigou.pojo.AliOrder">
+        update ali_order
+        set nick_name   = #{nickName,jdbcType=VARCHAR},
+            name        = #{name,jdbcType=VARCHAR},
+            price       = #{price,jdbcType=DOUBLE},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = now(),
+            img         = #{img,jdbcType=LONGVARCHAR}
+        where ali_order_id = #{aliOrderId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xmr.ruigou.pojo.AliOrder">
+        update ali_order
+        set nick_name   = #{nickName,jdbcType=VARCHAR},
+            name        = #{name,jdbcType=VARCHAR},
+            price       = #{price,jdbcType=DOUBLE},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = now()
+        where ali_order_id = #{aliOrderId,jdbcType=BIGINT}
+    </update>
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from ali_order ORDER BY nick_name
+    </select>
+    <select id="selectByNickName" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from ali_order where nick_name = #{nickName,jdbcType=VARCHAR}
+    </select>
+</mapper>

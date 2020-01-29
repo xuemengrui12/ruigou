@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmr.ruigou.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.xmr.ruigou.pojo.User">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="ali_pay" jdbcType="VARCHAR" property="aliPay"/>
+        <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="question" jdbcType="VARCHAR" property="question"/>
+        <result column="answer" jdbcType="VARCHAR" property="answer"/>
+        <result column="role" jdbcType="INTEGER" property="role"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, user_name, password, ali_pay, true_name, email, phone, question, answer,
+    role, create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.xmr.ruigou.pojo.User">
+        insert into user (user_id, user_name, password,
+                          ali_pay, true_name, email,
+                          phone, question, answer,
+                          role, create_time, update_time)
+        values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+                #{aliPay,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, #{answer,jdbcType=VARCHAR},
+                #{role,jdbcType=INTEGER}, now(), now())
+    </insert>
+    <insert id="insertSelective" parameterType="com.xmr.ruigou.pojo.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="aliPay != null">
+                ali_pay,
+            </if>
+            <if test="trueName != null">
+                true_name,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="question != null">
+                question,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{user_name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="aliPay != null">
+                #{aliPay,jdbcType=VARCHAR},
+            </if>
+            <if test="trueName != null">
+                #{trueName,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="question != null">
+                #{question,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xmr.ruigou.pojo.User">
+        update user
+        <set>
+            <if test="userName != null">
+                user_name = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="aliPay != null">
+                ali_pay = #{aliPay,jdbcType=VARCHAR},
+            </if>
+            <if test="trueName != null">
+                true_name = #{trueName,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="question != null">
+                question = #{question,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xmr.ruigou.pojo.User">
+        update user
+        set user_name    = #{userName,jdbcType=VARCHAR},
+            password    = #{password,jdbcType=VARCHAR},
+            ali_pay     = #{aliPay,jdbcType=VARCHAR},
+            true_name   = #{trueName,jdbcType=VARCHAR},
+            email       = #{email,jdbcType=VARCHAR},
+            phone       = #{phone,jdbcType=VARCHAR},
+            question    = #{question,jdbcType=VARCHAR},
+            answer      = #{answer,jdbcType=VARCHAR},
+            role        = #{role,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = now()
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="checkUsername" parameterType="string" resultType="int">
+        select count(1)
+        from user
+        where user_name = #{userName}
+    </select>
+    <select id="checkEmail" parameterType="string" resultType="int">
+        select count(1)
+        from user
+        where email = #{email}
+    </select>
+    <select id="selectLogin" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from user
+        where user_name = #{userName}
+        and password = #{password}
+    </select>
+    <select id="selectQuestionByUsername" parameterType="string" resultType="string">
+        select question
+        from user
+        where user_name = #{userName}
+    </select>
+    <select id="checkAnswer" parameterType="map" resultType="int">
+        SELECT count(1)
+        from user
+        where user_name = #{userName}
+          and question = #{question}
+          and answer = #{answer}
+    </select>
+    <update id="updatePasswordByUsername" parameterType="map">
+        update user
+        SET password    = #{passwordNew},
+            update_time = now()
+        where user_name = #{userName}
+    </update>
+
+    <select id="checkPassword" parameterType="map" resultType="int">
+        SELECT count(1)
+        from user
+        where password = #{password}
+          and user_id = #{userId}
+    </select>
+
+
+    <select id="checkEmailByUserId" parameterType="map" resultType="int">
+        select count(1)
+        from user
+        where email = #{email}
+          and user_id != #{userId}
+    </select>
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where username = #{userName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
